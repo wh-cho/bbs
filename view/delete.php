@@ -1,0 +1,57 @@
+<!doctype html>
+<?php
+
+use Model\Post;
+
+include "part/header.php";
+?>
+<body>
+<?php
+$post = new Post();
+$idx = $_GET['idx'];
+$postInfo = $post->getPost($idx);
+if ($postInfo) {
+    ?>
+    <div class="m-4">
+        <div class="container mt-5">
+            <h3 class="d-inline"><a href="/bbs">자유게시판</a></h3>/<h4 class="d-inline">글 삭제</h4>
+            <p class="mt-1">글을 삭제하는 공간입니다.</p>
+
+            <form action="/bbs/post/delete" method="post">
+                <span class="mr-2">작성일: <?= $postInfo['created_at'] ?></span>
+                <span class="mr-2">수정일: <?= $postInfo['updated_at'] ?></span>
+                <span class="mr-2">조회수: <?= $postInfo['views'] ?></span>
+                <span class="mr-2">추천수: <?= $postInfo['thumbs_up'] ?></span>
+
+                <input type="hidden" name="idx" value="<?= $idx ?>">
+
+                <div class="form-group mt-3">
+                    <label for="title">제목</label>
+                    <p><?= $postInfo['title'] ?></p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Name</label>
+                        <p> <?= $postInfo['name'] ?></p>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="pw" placeholder="Password를 입력해주세요.">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">삭제</button>
+                <a href="/bbs" class="btn btn-secondary">목록</a>
+                <a href="./read?idx=<?= $postInfo['idx'] ?>" class="btn btn-secondary">뒤로가기</a>
+            </form>
+        </div>
+    </div>
+    <?php
+} else {
+    echo "<script>alert('존재하지 않는 게시물입니다.');history.back();</script>";
+}
+?>
+</body>
+</html>
